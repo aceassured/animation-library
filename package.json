@@ -1,0 +1,38 @@
+{
+  "name": "@aceassured/animation-library",
+  "version": "1.0.0",
+  "description": "Internal reusable animation library for Ace Assured projects",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aceassured/animation-library.git"
+  },
+  "keywords": ["react", "animation", "framer-motion", "nextjs"],
+  "author": "Ace Assured",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aceassured/animation-library/issues"
+  },
+  "homepage": "https://github.com/aceassured/animation-library#readme",
+
+  "peerDependencies": {
+    "react": ">=18"
+  },
+
+  "dependencies": {
+    "framer-motion": "^12.23.25"
+  },
+
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}
