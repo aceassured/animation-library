@@ -9,21 +9,32 @@ export function SmoothPageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const lenis = new Lenis({
-      // ⭐ THESE CONTROL THE "CHEESE FEEL"
-      duration: 1.2,             // longer = smoother
-      easing: (t: number) => 1 - Math.pow(1 - t, 3), // butter curve
-      smoothWheel: true,          // mouse wheel inertia ✅
+      duration: 1.2,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
+      smoothWheel: true,
+      wheelMultiplier: 1,
       touchMultiplier: 1.5,
-      wheelMultiplier: 1.0,
-      infinite: false,
+
+      // ✅ THIS IS THE KEY FIX
+      prevent: (node) => {
+        if (!(node instanceof HTMLElement)) return false;
+
+        const style = window.getComputedStyle(node);
+        const overflowY = style.overflowY;
+
+        return (
+          (overflowY === "auto" || overflowY === "scroll") &&
+          node.scrollHeight > node.clientHeight
+        );
+      },
     });
 
     lenisRef.current = lenis;
 
-    function raf(time: number) {
+    const raf = (time: number) => {
       lenis.raf(time);
       rafRef.current = requestAnimationFrame(raf);
-    }
+    };
 
     rafRef.current = requestAnimationFrame(raf);
 
