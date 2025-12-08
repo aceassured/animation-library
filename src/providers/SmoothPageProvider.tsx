@@ -1,7 +1,7 @@
 "use client";
 
+import Lenis from "lenis";
 import { ReactNode, useEffect, useRef } from "react";
-import Lenis from "@studio-freight/lenis";
 
 export function SmoothPageProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
