@@ -6,10 +6,13 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": ["dist"],
+
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "prepare": "npm run build"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aceassured/animation-library.git"
