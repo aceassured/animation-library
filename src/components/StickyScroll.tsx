@@ -21,6 +21,9 @@ interface StickyScrollProps {
   sectionClassName?: string;
   containerClassName?: string;
   stickyContentClassName?: string;
+  stickyWrapperClassName?: string;
+  stickyTitleClassName?: string;
+  stickySubtitleClassName?: string;
   cardsContainerClassName?: string;
   cardSpacing?: string;
   enableAnimation?: boolean;
@@ -70,11 +73,19 @@ function FeatureCard({
   const start = index / totalItems;
 
   const y = enableAnimation
-    ? useTransform(scrollYProgress, [start, start + animationRange], [yStart, yEnd])
+    ? useTransform(
+        scrollYProgress,
+        [start, start + animationRange],
+        [yStart, yEnd]
+      )
     : undefined;
 
   const opacity = enableAnimation
-    ? useTransform(scrollYProgress, [start, start + animationRange], [opacityStart, opacityEnd])
+    ? useTransform(
+        scrollYProgress,
+        [start, start + animationRange],
+        [opacityStart, opacityEnd]
+      )
     : undefined;
 
   const baseCardClass = "rounded-2xl bg-white p-6 shadow-xl";
@@ -88,12 +99,18 @@ function FeatureCard({
       className={`${baseCardClass} ${cardClassName}`}
     >
       <div className={`${baseImageClass} ${imageClassName}`}>
-        <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+        <img
+          src={item.image}
+          alt={item.title}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <h3 className={`${baseTitleClass} ${titleClassName}`}>{item.title}</h3>
 
-      <p className={`${baseDescClass} ${descriptionClassName}`}>{item.description}</p>
+      <p className={`${baseDescClass} ${descriptionClassName}`}>
+        {item.description}
+      </p>
     </motion.div>
   );
 }
@@ -109,6 +126,9 @@ export function StickyScroll({
   sectionClassName = "",
   containerClassName = "",
   stickyContentClassName = "",
+  stickyWrapperClassName = "",
+  stickyTitleClassName = "",
+  stickySubtitleClassName = "",
   cardsContainerClassName = "",
   cardSpacing = "space-y-20",
   enableAnimation = false,
@@ -123,16 +143,34 @@ export function StickyScroll({
   });
 
   const baseSectionClass = "bg-[#F4F4F4] py-32";
-  const baseContainerClass = "mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 md:grid-cols-2";
+  const baseContainerClass =
+    "mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 md:grid-cols-2";
   const baseStickyClass = "md:sticky md:top-1/2 h-fit";
+  const baseStickyWrapperClass = "";
+  const baseStickyTitleClass = "mb-6 text-4xl font-bold";
+  const baseStickySubtitleClass = "text-lg leading-relaxed text-black/60";
 
   return (
-    <section ref={sectionRef} className={`${baseSectionClass} ${sectionClassName}`}>
+    <section
+      ref={sectionRef}
+      className={`${baseSectionClass} ${sectionClassName}`}
+    >
       <div className={`${baseContainerClass} ${containerClassName}`}>
         {/* LEFT – STICKY */}
         <div className={`${baseStickyClass} ${stickyContentClassName}`}>
-          <h2 className="mb-6 text-4xl font-bold">{title}</h2>
-          <p className="text-lg leading-relaxed text-black/60">{subtitle}</p>
+          <div
+            className={`${baseStickyWrapperClass} ${stickyWrapperClassName}`}
+          >
+            <h2 className={`${baseStickyTitleClass} ${stickyTitleClassName}`}>
+              {title}
+            </h2>
+
+            <p
+              className={`${baseStickySubtitleClass} ${stickySubtitleClassName}`}
+            >
+              {subtitle}
+            </p>
+          </div>
         </div>
 
         {/* RIGHT – CARDS */}
