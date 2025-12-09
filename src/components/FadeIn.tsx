@@ -7,16 +7,18 @@ interface FadeInProps {
   duration?: number;
 }
 
-export const FadeIn = ({
-  children,
-  delay = 0,
-  duration = 0.6,
-}: FadeInProps) => {
+export const FadeIn = ({ children, delay = 0 }: FadeInProps) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration, ease: "easeOut" }}
+      transition={{
+        delay,
+        type: "spring",
+        stiffness: 120,
+        damping: 22,
+        mass: 0.9,
+      }}
     >
       {children}
     </motion.div>
