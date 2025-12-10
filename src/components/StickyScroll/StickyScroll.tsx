@@ -10,7 +10,7 @@ export interface StickyScrollItem {
   image: string;
 }
 
-interface StickyScrollProps {
+export interface StickyScrollProps {
   title: string;
   subtitle: string;
   items: StickyScrollItem[];
@@ -37,7 +37,7 @@ interface StickyScrollProps {
   renderCustomCard?: (item: StickyScrollItem, index: number) => ReactNode;
 }
 
-interface FeatureCardProps {
+export interface FeatureCardProps {
   item: StickyScrollItem;
   index: number;
   totalItems: number;
@@ -50,7 +50,7 @@ interface FeatureCardProps {
   descriptionClassName?: string;
 }
 
-function FeatureCard({
+export function FeatureCard({
   item,
   index,
   totalItems,
