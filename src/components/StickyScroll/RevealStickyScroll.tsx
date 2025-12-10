@@ -10,9 +10,8 @@ export function RevealStickyScroll(props: StickyScrollProps) {
         yEnd: 0,
         opacityStart: 0,
         opacityEnd: 1,
-        animationRange: 0.22,
+        animationRange: 0.2,
       }}
-      cardClassName="scale-95 will-change-transform"
     />
   );
 }

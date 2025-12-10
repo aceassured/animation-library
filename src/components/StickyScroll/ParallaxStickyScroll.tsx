@@ -7,7 +7,7 @@ export function ParallaxStickyScroll(props: StickyScrollProps) {
       enableAnimation
       animationConfig={{
         yStart: 120,
-        yEnd: -20, // 👈 parallax drift
+        yEnd: -20,
         opacityStart: 0,
         opacityEnd: 1,
         animationRange: 0.3,

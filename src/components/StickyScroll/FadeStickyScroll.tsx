@@ -1,4 +1,4 @@
-import StickyScroll, { StickyScrollProps } from "./StickyScroll";
+import { StickyScroll, StickyScrollProps } from "./StickyScroll";
 
 export function FadeStickyScroll(props: StickyScrollProps) {
   return (
@@ -6,11 +6,11 @@ export function FadeStickyScroll(props: StickyScrollProps) {
       {...props}
       enableAnimation
       animationConfig={{
-        yStart: 40,
+        yStart: 60,
         yEnd: 0,
         opacityStart: 0,
         opacityEnd: 1,
-        animationRange: 0.18,
+        animationRange: 0.15,
       }}
     />
   );
