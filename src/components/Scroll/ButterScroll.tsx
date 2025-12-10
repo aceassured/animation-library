@@ -2,19 +2,19 @@
 
 import { useEffect, useRef } from "react";
 
-interface SmoothSectionProps {
+interface ButterScrollProps {
   children: React.ReactNode;
   height?: string | number;
-  ease?: number;
-  wheelMultiplier?: number;
+  smoothness?: number;   // lower = smoother
+  wheelSpeed?: number;
 }
 
-export function SmoothSection({
+export function ButterScroll({
   children,
   height = "500px",
-  ease = 0.12,
-  wheelMultiplier = 1,
-}: SmoothSectionProps) {
+  smoothness = 0.06,
+  wheelSpeed = 0.8,
+}: ButterScrollProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
 
@@ -28,38 +28,38 @@ export function SmoothSection({
     const content = contentRef.current;
     if (!wrapper || !content) return;
 
-    const resize = () => {
+    const measure = () => {
       maxScroll.current = content.scrollHeight - wrapper.clientHeight;
-      target.current = Math.min(target.current, maxScroll.current);
     };
 
-    resize();
-    window.addEventListener("resize", resize);
+    measure();
+    window.addEventListener("resize", measure);
 
-    /** 🚫 Disable native scrolling */
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      target.current += e.deltaY * wheelMultiplier;
+
+      target.current += e.deltaY * wheelSpeed;
       target.current = Math.max(0, Math.min(target.current, maxScroll.current));
     };
 
     wrapper.addEventListener("wheel", onWheel, { passive: false });
 
-    /** RAF smooth loop */
     const animate = () => {
-      current.current += (target.current - current.current) * ease;
+      current.current += (target.current - current.current) * smoothness;
+
       content.style.transform = `translate3d(0, ${-current.current}px, 0)`;
+
       raf.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
-      window.removeEventListener("resize", resize);
       wrapper.removeEventListener("wheel", onWheel);
+      window.removeEventListener("resize", measure);
       if (raf.current) cancelAnimationFrame(raf.current);
     };
-  }, [ease, wheelMultiplier]);
+  }, [smoothness, wheelSpeed]);
 
   return (
     <div
