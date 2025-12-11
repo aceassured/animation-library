@@ -42,7 +42,6 @@ export function HorizontalStickyScroll({
   title,
   subtitle,
   items,
-  height = "100vh",
   renderCustomCard,
   containerClassName = "",
   leftClassName = "flex flex-col justify-center px-16",
@@ -67,7 +66,6 @@ export function HorizontalStickyScroll({
     <section
       ref={sectionRef as React.RefObject<HTMLDivElement>}
       className={`relative h-[300vh] bg-[#F4F4F4] ${containerClassName}`}
-      style={{ height }}
     >
       <div className="sticky top-0 left-0 h-screen grid grid-cols-2">
         {/* LEFT – Sticky Content */}
