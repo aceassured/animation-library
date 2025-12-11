@@ -22,5 +22,5 @@ export * from "./components/StickyScroll/RevealStickyScroll";
 export * from "./components/StickyScroll/SnapStickyScroll";
 export * from "./components/StickyScroll/SlideStickyScroll";
 
+export * from "./components/StickyScroll/ParallaxStackScroll";
 export * from "./components/StickyScroll/HorizontalStickyScroll";
-export * from "./components/StickyScroll/FadeHorizontalStickyScroll";

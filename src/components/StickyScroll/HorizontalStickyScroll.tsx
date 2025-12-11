@@ -1,19 +1,18 @@
-// HorizontalStickyScroll.tsx
 "use client";
 
 import React, { ReactNode, useRef } from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { StickyScrollItem } from "./StickyScroll"; // reuse your StickyScrollItem type
+
+interface StickyScrollItem {
+  title: string;
+  description: string;
+  image: string;
+}
 
 export interface HorizontalStickyScrollProps {
   title: string;
   subtitle: string;
   items: StickyScrollItem[];
-  height?: string | number;
-  /**
-   * Optional custom card renderer.
-   * It's called for each item and passed the scrollYProgress MotionValue and totalItems.
-   */
   renderCustomCard?: (
     item: StickyScrollItem,
     index: number,
@@ -21,13 +20,23 @@ export interface HorizontalStickyScrollProps {
     totalItems: number
   ) => ReactNode;
   containerClassName?: string;
-  leftClassName?: string;
-  cardsWrapperClassName?: string;
+  containerStyle?: React.CSSProperties;
+  leftPanelClassName?: string;
+  leftPanelStyle?: React.CSSProperties;
+  titleClassName?: string;
+  titleStyle?: React.CSSProperties;
+  subtitleClassName?: string;
+  subtitleStyle?: React.CSSProperties;
+  rightPanelClassName?: string;
+  rightPanelStyle?: React.CSSProperties;
+  cardWrapperClassName?: string;
+  cardWrapperStyle?: React.CSSProperties;
+  cardWidth?: string;
+  cardWidthMobile?: string;
 }
 
-/** Default card renderer you can reuse */
 export const DEFAULT_CARD = (item: StickyScrollItem) => (
-  <div className="w-[60vw] max-w-md bg-white rounded-2xl shadow-xl p-6">
+  <div className="mx-auto max-w-xl bg-white rounded-2xl shadow-xl p-6">
     <img
       src={item.image}
       alt={item.title}
@@ -38,67 +47,113 @@ export const DEFAULT_CARD = (item: StickyScrollItem) => (
   </div>
 );
 
-export function HorizontalStickyScroll({
+// ============================================
+// VERSION 1: HORIZONTAL STICKY SCROLL (Original)
+// ============================================
+export default function HorizontalStickyScroll({
   title,
   subtitle,
   items,
   renderCustomCard,
   containerClassName = "",
-  leftClassName = "flex flex-col justify-center px-16",
-  cardsWrapperClassName = "flex h-full items-center gap-12 pr-16",
+  containerStyle = {},
+  leftPanelClassName = "",
+  leftPanelStyle = {},
+  titleClassName = "",
+  titleStyle = {},
+  subtitleClassName = "",
+  subtitleStyle = {},
+  rightPanelClassName = "",
+  rightPanelStyle = {},
+  cardWrapperClassName = "",
+  cardWrapperStyle = {},
+  cardWidth = "700px",
+  cardWidthMobile = "100%",
 }: HorizontalStickyScrollProps) {
-  const sectionRef = useRef<HTMLElement | null>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    // full section from top to bottom maps to 0..1
     offset: ["start start", "end end"],
   });
 
-  // translate cards horizontally across the viewport width
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["0%", `-${(items.length - 1) * 100}%`]
-  );
+  const totalSteps = Math.max(1, items.length);
+
+  const x = useTransform(scrollYProgress, (progress) => {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    if (isMobile) {
+      return `${-progress * (totalSteps - 1) * 100}vw`;
+    } else {
+      const widthNum = parseInt(cardWidth);
+      return `${-progress * (totalSteps - 1) * widthNum}px`;
+    }
+  });
+
+  const sectionHeight = `${totalSteps * 100}vh`;
 
   return (
     <section
-      ref={sectionRef as React.RefObject<HTMLDivElement>}
-      className={`relative h-[300vh] bg-[#F4F4F4] ${containerClassName}`}
+      ref={sectionRef}
+      className={`relative bg-[#F4F4F4] ${containerClassName}`}
+      style={{
+        height: sectionHeight,
+        ...containerStyle,
+      }}
     >
-      <div className="sticky top-0 left-0 h-screen grid grid-cols-2">
-        {/* LEFT – Sticky Content */}
-        <div className={leftClassName}>
-          <h2 className="text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-black/70 text-lg">{subtitle}</p>
+      <div className="sticky top-0 left-0 h-screen w-full overflow-hidden">
+        <div className="h-full w-full grid grid-cols-1 md:grid-cols-2">
+          <div
+            className={`flex flex-col justify-center px-6 py-8 md:px-12 lg:px-16 ${leftPanelClassName}`}
+            style={leftPanelStyle}
+          >
+            <h2
+              className={`text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 ${titleClassName}`}
+              style={titleStyle}
+            >
+              {title}
+            </h2>
+            <p
+              className={`text-black/70 text-base md:text-lg lg:text-xl ${subtitleClassName}`}
+              style={subtitleStyle}
+            >
+              {subtitle}
+            </p>
+          </div>
+
+          <div
+            className={`relative h-full flex items-center overflow-hidden ${rightPanelClassName}`}
+            style={rightPanelStyle}
+          >
+            <motion.div style={{ x }} className="flex h-full items-center">
+              {items.map((item, index) => {
+                const key = `${item.title}-${index}`;
+                return (
+                  <div
+                    key={key}
+                    className={`flex-shrink-0 h-full flex items-center px-4 md:px-8 ${cardWrapperClassName}`}
+                    style={{
+                      width:
+                        typeof window !== "undefined" && window.innerWidth < 768
+                          ? cardWidthMobile
+                          : cardWidth,
+                      ...cardWrapperStyle,
+                    }}
+                  >
+                    {renderCustomCard
+                      ? renderCustomCard(
+                          item,
+                          index,
+                          scrollYProgress,
+                          items.length
+                        )
+                      : DEFAULT_CARD(item)}
+                  </div>
+                );
+              })}
+            </motion.div>
+          </div>
         </div>
-
-        {/* RIGHT – Horizontal Scroll Content */}
-        <motion.div style={{ x }} className={`${cardsWrapperClassName}`}>
-          {items.map((item, index) => {
-            const key = `${item.title}-${index}`;
-
-            if (renderCustomCard) {
-              // pass scrollYProgress & totalItems to the custom renderer
-              return (
-                <div key={key} className="min-w-[60vw] flex-shrink-0">
-                  {renderCustomCard(item, index, scrollYProgress, items.length)}
-                </div>
-              );
-            }
-
-            // default card
-            return (
-              <div key={key} className="min-w-[60vw] flex-shrink-0">
-                {DEFAULT_CARD(item)}
-              </div>
-            );
-          })}
-        </motion.div>
       </div>
     </section>
   );
 }
-
-export default HorizontalStickyScroll;
