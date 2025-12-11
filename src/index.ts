@@ -24,3 +24,6 @@ export * from "./components/StickyScroll/SlideStickyScroll";
 
 export * from "./components/StickyScroll/ParallaxStackScroll";
 export * from "./components/StickyScroll/HorizontalStickyScroll";
+
+
+export * from "./components/cursor/index";
