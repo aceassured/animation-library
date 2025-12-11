@@ -50,7 +50,7 @@ export const DEFAULT_CARD = (item: StickyScrollItem) => (
 // ============================================
 // VERSION 1: HORIZONTAL STICKY SCROLL (Original)
 // ============================================
-export default function HorizontalStickyScroll({
+export  function HorizontalStickyScroll({
   title,
   subtitle,
   items,
