@@ -1,7 +1,6 @@
 export * from "./components/FadeIn";
 export * from "./components/FadeOut";
 
-
 export * from "./providers/SmoothPageProvider";
 
 export * from "./components/Scroll/ButterScroll";
@@ -22,3 +21,6 @@ export * from "./components/StickyScroll/ProgressStickyScroll";
 export * from "./components/StickyScroll/RevealStickyScroll";
 export * from "./components/StickyScroll/SnapStickyScroll";
 export * from "./components/StickyScroll/SlideStickyScroll";
+
+export * from "./components/StickyScroll/HorizontalStickyScroll";
+export * from "./components/StickyScroll/FadeHorizontalStickyScroll";
