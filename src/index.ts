@@ -27,3 +27,4 @@ export * from "./components/StickyScroll/HorizontalStickyScroll";
 
 
 export * from "./components/cursor/index";
+export * from "./components/cursor/FluidRainbowCursor";
