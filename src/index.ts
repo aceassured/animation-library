@@ -25,6 +25,5 @@ export * from "./components/StickyScroll/SlideStickyScroll";
 export * from "./components/StickyScroll/ParallaxStackScroll";
 export * from "./components/StickyScroll/HorizontalStickyScroll";
 
-
 export * from "./components/cursor/index";
-export * from "./components/cursor/FluidRainbowCursor";
+export { default as FluidRainbowCursor } from "./components/cursor/FluidRainbowCursor";
