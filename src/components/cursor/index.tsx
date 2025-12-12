@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import FluidRainbowCursor from "./FluidRainbowCursor";
 
 /**
  * 1) SplashCursor
@@ -877,4 +878,5 @@ export default {
   ElectricCursor,
   EmojiCursor,
   ShadowCloneCursor,
+  FluidRainbowCursor,
 };
